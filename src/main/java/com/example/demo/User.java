@@ -25,22 +25,25 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
 @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
 inverseJoinColumns = @JoinColumn(name="role_id"))
     private Collection<Role> roles;
     public User(){
     }
 
-    public User(String email, String password, String firstname, String lastname, boolean enabled, String username, Collection<Role> roles) {
+    public User(String email, String password, String firstname, String lastname, boolean enabled, String username) {
         this.email = email;
-        this.password = password;
+        BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+        this.password = b.encode(password);
         this.firstname = firstname;
         this.lastname = lastname;
         this.enabled = enabled;
         this.username = username;
         this.roles = roles;
     }
+
+
 
 
     public long getId() {
